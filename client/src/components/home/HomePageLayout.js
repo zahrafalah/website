@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import {
     Button,
     Container,
@@ -14,6 +15,7 @@ import {
     Segment,
     Sidebar,
     Visibility,
+    MenuItem,
 } from 'semantic-ui-react'
 
 // Heads up!
@@ -106,17 +108,21 @@ class DesktopContainer extends Component {
                             <Container>
                                 <Menu.Item as='a' active>
                                     Home
-                </Menu.Item>
+                                </Menu.Item>
                                 <Menu.Item as='a'>Shop</Menu.Item>
                                 <Menu.Item as='a'>Cards</Menu.Item>
-                                <Menu.Item as='a'>Careers</Menu.Item>
+                                <Menu.Item as='a'><Link to= '/Users'>Users</Link></Menu.Item>
+                                <Menu.Item as= 'a'><Link to= '/Users'>Products</Link></Menu.Item>
                                 <Menu.Item position='right'>
+                                    
+                                
                                     <Button as='a' inverted={!fixed}>
-                                        Log in
-                  </Button>
+                                    <Link to= '/Log-in'> Log in </Link>
+                                    </Button>
+                               
                                     <Button as='a' inverted={!fixed} primary={fixed} style={{ marginLeft: '0.5em' }}>
                                         Sign Up
-                  </Button>
+                                    </Button>
                                 </Menu.Item>
                             </Container>
                         </Menu>
