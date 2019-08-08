@@ -112,7 +112,7 @@ class DesktopContainer extends Component {
                                 <Menu.Item as='a'>Shop</Menu.Item>
                                 <Menu.Item as='a'>Cards</Menu.Item>
                                 <Menu.Item as='a'><Link to= '/Users'>Users</Link></Menu.Item>
-                                <Menu.Item as= 'a'><Link to= '/Users'>Products</Link></Menu.Item>
+                                <Menu.Item as= 'a'><Link to= '/Products'>Products</Link></Menu.Item>
                                 <Menu.Item position='right'>
                                     
                                 

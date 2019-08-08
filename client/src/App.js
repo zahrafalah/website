@@ -11,7 +11,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Route exact path = '/Home' component = {HomepageLayout}/>
+        <Route exact path = '/' component = {HomepageLayout}/>
         <Route exact path = '/Users' component = {Users}/>
         <Route exact path = '/Products' component = {Products}/>
         <Route exact path= '/Log-in' component = {LoginLayout} />

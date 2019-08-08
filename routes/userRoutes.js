@@ -5,6 +5,42 @@ const router = require("express").Router();
 
 const db = require('../models');
 
+//  
+router.post("/api/user/login",(req, res, next)=>{
+    db.user.find({username: req.body.username})
+    .exec()
+    .then(user => {
+        if(user.length < 1){
+            return res.status(401).json({
+                message: 'Auth failed'
+            })
+        }
+        bcrypt.compare(req.body.password, user[0].password, (err, result)=>{
+            if(err){
+                return res.status(401).json({
+                    message: 'Auth failed'
+                });
+            }
+            if (resault){
+                return res.status(200).json({
+                    message: 'Auth successful'
+                })
+            }
+            res.status(401).json({
+                message:'Auth failed'
+            })
+
+        })
+    })
+    .catch(err=> {
+        console.log(err);
+        res.status(500).json({
+            error: err
+            
+        });
+    });
+});
+
 // GET route for getting all of the users
 router.get('/api/user', function (req, res) {
     // findAll returns all entries for a table when used with no options
