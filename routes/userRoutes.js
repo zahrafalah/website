@@ -6,20 +6,21 @@ const router = require("express").Router();
 const db = require('../models');
 
 // GET route for getting all of the users
-router.get('/api/user/', function (req, res) {
+router.get('/api/user', function (req, res) {
     // findAll returns all entries for a table when used with no options
     db.User.findAll({})
         .then(function (dbUsers) {
+            console.log('dbUsers', dbUsers);
             // We have access to the users as an argument inside of the callback function
-            res.json(dbUsers);
+            res.send(dbUsers);
         })
         .catch(function (err) {
-            res.json(err);
+            res.status(500).send(err);
         });
 });
 
 // POST route for saving a new user
-router.post('/api/user/', function (req, res) {
+router.post('/api/user', function (req, res) {
     // create takes an argument of an object describing the item we want to
     // insert into our table. In this case we just we pass in an object with a text
     // and complete property
@@ -27,10 +28,10 @@ router.post('/api/user/', function (req, res) {
     db.User.create(req.body)
         .then(function (dbUsers) {
             // We have access to the new user as an argument inside of the callback function
-            res.json(dbUsers);
+            res.send(dbUsers);
         })
         .catch(function (err) {
-            res.json(err);
+            res.status(500).send(err);
         });
 });
 

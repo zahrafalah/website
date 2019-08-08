@@ -19,10 +19,10 @@ router.get('/api/Products/:id?', function (req, res) {
 
     db.Products.findAll({ where })
         .then(function (dbProducts) {
-            if (dbProducts.length < 1) {
-                res.status(404).send('Nothing was found');
-                return;
-            }
+            // if (dbProducts.length < 1) {
+            //     res.status(404).send('Nothing was found');
+            //     return;
+            // }
             // We have access to the users as an argument inside of the callback function
             res.json(dbProducts);
         })

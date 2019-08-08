@@ -14,7 +14,10 @@ class User extends Component {
             .then(res => res.json())
             .then(user =>
                 this.setState({ user: user }, () => console.log('user fetched', user))
-            );
+            )
+            .catch(err => {
+                // do something with the error
+            })
     }
 
     createUser = (user) => {
@@ -26,7 +29,10 @@ class User extends Component {
             .then(res => res.json())
             .then(user =>
                 this.setState({ user: user }, () => console.log('user fetched', user))
-            );
+            )
+            .catch(err => {
+                // do something with the error
+            })
     }
 
     render() {
