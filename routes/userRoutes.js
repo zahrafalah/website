@@ -4,18 +4,31 @@ const router = require("express").Router();
 //Dependencies
 
 const db = require('../models');
+const bcrypt = require('bcrypt');
 
-//  
+//Signin post restful-api for user authentication using Json web token
+// router.post('/signup',(req, res, next)=>{
+//     const user = new User({
+        
+//     })
+// })
+
+
+//Login post  rest-api for user authentication using Json web token
 router.post("/api/user/login",(req, res, next)=>{
-    db.user.find({username: req.body.username})
-    .exec()
+    db.User.findOne({username: req.body.username})
     .then(user => {
         if(user.length < 1){
             return res.status(401).json({
                 message: 'Auth failed'
             })
         }
+        console.log("User: ", user);
+        console.log("User PassWord: ",req.body.password);
+        // let pass= req.body.password;
+        //password is not defined
         bcrypt.compare(req.body.password, user[0].password, (err, result)=>{
+            
             if(err){
                 return res.status(401).json({
                     message: 'Auth failed'
