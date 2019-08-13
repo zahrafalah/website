@@ -6,6 +6,55 @@ const router = require("express").Router();
 const db = require("../models");
 const bcrypt = require("bcryptjs");
 
+// Signin post restful-api for user authentication using async/await
+// Tested with postman "Auth Successful"
+router.post("/signup", async (req, res, next) => {
+  //We are not using .then & .catch as we normally use in promises. So we have to use try catch instead.
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(req.body.password, salt);
+    req.body.password = hashedPassword;
+    // console.log("req.body", req.body);
+    const user = await db.User.create(req.body);
+
+    //sending back
+    res.send(user);
+  } catch (e) {
+    //if any of the promises fail
+    res.status(500).send(e);
+  }
+
+  // Signin post restful-api for user authentication using promises
+  //router.post("/signup", (req, res, next) => {
+  //   bcrypt.hash(req.body.password, 10, (err, hash) => {
+  //     if (err) {
+  //       return res.status(500).json({
+  //         error: err
+  //       });
+  //     } else {
+  //       // const user = new User({
+  //       //     id:
+  //       //     email:
+  //       //     password:
+  //       // })
+  //       user
+  //         .save()
+  //         .then(result => {
+  //           console.log(result);
+  //           res.status(201).json({
+  //             message: "User Created"
+  //           });
+  //         })
+  //         .catch(err => {
+  //           console.log(err);
+  //           res.status(500).json({
+  //             error: err
+  //           });
+  //         });
+  //     }
+  //   });
+});
+
 //Login post rest-api for user authentication using using async/await
 //Tested with postman "Auth successful"
 router.post("/api/user/login", async (req, res, next) => {
