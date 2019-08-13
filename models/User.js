@@ -19,27 +19,28 @@ module.exports = function (sequelize, DataTypes) {
           }
         }
       }
-    },
-    {
-      //in order to guarantee that the password being provided by the user matches with what it is in database
-      classMethods: {
-        //our call back name is done
-        validPassword: function (password, passwd, done, user) {
-          bcrypt.compare(password, passwd, function (err, isMatch) {
-            if (err) console.log(err);
-            if (isMatch) {
-              return done(null, user);
-            } else {
-              return done(null, false);
-            }
-          });
-        }
-      }
-    },
-    {
-      //telling sequelize what sort of db it is working with
-      dialect: 'mysql'
     }
+    // ,
+    // {
+    //   //in order to guarantee that the password being provided by the user matches with what it is in database
+    //   classMethods: {
+    //     //our call back name is done
+    //     validPassword: function (password, passwd, done, user) {
+    //       bcrypt.compare(password, passwd, function (err, isMatch) {
+    //         if (err) console.log(err);
+    //         if (isMatch) {
+    //           return done(null, user);
+    //         } else {
+    //           return done(null, false);
+    //         }
+    //       });
+    //     }
+    //   }
+    // },
+    // {
+    //   //telling sequelize what sort of db it is working with
+    //   dialect: 'mysql'
+    // }
   );
 
   //every time the user is being created we want to hash their password;turning it
