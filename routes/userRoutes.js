@@ -1,10 +1,15 @@
 const router = require("express").Router();
+const jwt = require("jsonwebtoken");
 //api-routes.js - this file offers a set of routes for displaying and saving data to db
-
+const config = require("../config/config");
 //Dependencies
 
 const db = require("../models");
 const bcrypt = require("bcryptjs");
+
+// router.get("/secret" ,passport.authenticate('', { session: false }), function(req, res){
+//   res.json("Success! You can not see this without a token");
+// });
 
 // Signin post restful-api for user authentication using async/await
 // Tested with postman "Auth Successful"
@@ -76,13 +81,29 @@ router.post("/api/user/login", async (req, res, next) => {
     );
 
     if (isMatch) {
-      return res.status(200).json({ username: user.dataValues.username });
+      console.log(user.dataValues.username);
+      //first arg is payload that we want to pass to client to jwt
+      const token = jwt.sign(
+        {
+          username: user.dataValues.username,
+          userId: user.dataValues.id
+        },
+        config.env.JWT_KEY,
+        {
+          expiresIn: "1h"
+        }
+      );
+      console.log(token);
+      return res.status(200).json({
+        username: user.dataValues.username,
+        token: token
+      });
     } else {
       return res.status(401).json({
         message: "Auth failed 0"
       });
     }
-  } catch (e) {
+  } catch (err) {
     console.log(err);
     res.status(500).json({
       error: err
