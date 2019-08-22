@@ -1,12 +1,21 @@
-const express = require('express');
+const express = require("express");
+
+const passport = require("passport");
 
 const app = express();
-var bodyParser = require('body-parser');
+
+//Authorization
+//==============================================================
+require("./passport.js")(passport);
+app.use(passport.initialize());
+app.use(passport.session());
+
+var bodyParser = require("body-parser");
 
 const Port = process.env.PORT || 8080;
 
 // Requiring our models for syncing
-var db = require('./models');
+var db = require("./models");
 
 // Sets up the Express app to handle data parsing
 
@@ -20,16 +29,9 @@ app.use(bodyParser.json());
 
 // Routes
 // =============================================================
-const apiRoutes = require('./routes/index.js');
+const apiRoutes = require("./routes/index.js");
 //connects all routes
 app.use(apiRoutes);
-
-//Authorization
-//==============================================================
-const passport = require('passport');
-
-app.use(passport.initialize());
-app.use(passport.session());
 
 SALT_WORK_FACTOR = 12;
 
@@ -47,8 +49,8 @@ SALT_WORK_FACTOR = 12;
 // =============================================================
 
 // Sequelize does not update automatically if you add columns to your tables,
-// m to fix it Use db.sequelize.sync({force= true}).then(function ()... instead 
-// and remove it once you update it.o  
-db.sequelize.sync().then(function () {
+// m to fix it Use db.sequelize.sync({force= true}).then(function ()... instead
+// and remove it once you update it.o
+db.sequelize.sync().then(function() {
   app.listen(Port, () => console.log(`Server started on port ${Port}`));
 });

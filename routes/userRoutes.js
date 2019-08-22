@@ -1,5 +1,9 @@
+const passport = require("passport");
+
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
+
+const passportjs = require("../passport");
 //api-routes.js - this file offers a set of routes for displaying and saving data to db
 const config = require("../config/config");
 //Dependencies
@@ -7,9 +11,13 @@ const config = require("../config/config");
 const db = require("../models");
 const bcrypt = require("bcryptjs");
 
-// router.get("/secret" ,passport.authenticate('', { session: false }), function(req, res){
-//   res.json("Success! You can not see this without a token");
-// });
+router.get(
+  "/secret",
+  passport.authenticate("jwt", { session: false }),
+  function(req, res) {
+    res.json("Success! You can not see this without a token");
+  }
+);
 
 // Signin post restful-api for user authentication using async/await
 // Tested with postman "Auth Successful"
