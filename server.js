@@ -6,9 +6,9 @@ const app = express();
 
 //Authorization
 //==============================================================
-require("./passport.js")(passport);
 app.use(passport.initialize());
 app.use(passport.session());
+require("./passport.js")(passport);
 
 var bodyParser = require("body-parser");
 

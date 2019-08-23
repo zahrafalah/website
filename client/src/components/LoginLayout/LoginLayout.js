@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import axios from "axios";
 import {
   Button,
   Form,
@@ -11,22 +11,33 @@ import {
 } from "semantic-ui-react";
 
 export default class LoginForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: " ",
-      password: "",
-      loginErrors: ""
-    };
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-  }
-  handleChange(event) {
+  state = {
+    username: "",
+    password: ""
+  };
+
+  handleChange = event => {
     this.setState({
       [event.target.name]: event.target.value
     });
-  }
-  handleSubmit(event) {}
+  };
+  handleSubmit = event => {
+    const { username, password } = this.state;
+    axios
+      .post("/api/user/login", {
+        user: {
+          username: username,
+          password: password
+        }
+      })
+      .then(response => {
+        console.log("response from the login: " + response);
+      })
+      .catch(error => {
+        console.log("requst error", error);
+      });
+    event.preventDefault();
+  };
   render() {
     return (
       <Grid
@@ -42,7 +53,8 @@ export default class LoginForm extends Component {
             <Segment stacked>
               <Form.Input
                 value={this.state.username}
-                onchange={this.handleChange}
+                onChange={this.handleChange}
+                name="username"
                 fluid
                 icon="user"
                 iconPosition="left"
@@ -51,7 +63,8 @@ export default class LoginForm extends Component {
 
               <Form.Input
                 value={this.state.password}
-                onchange={this.handleChange}
+                onChange={this.handleChange}
+                name="password"
                 fluid
                 icon="lock"
                 iconPosition="left"

@@ -1,40 +1,44 @@
 // const localstrategy = require("passport-local").Strategy;
 
-const passport = require("passport");
 const jwtStrategy = require("passport-jwt").Strategy;
 const { ExtractJwt } = require("passport-jwt");
 
 const config = require("./config/config");
 
-const User = require("./models/User");
+const db = require("./models");
 
 module.exports = function(passport) {
-  passport.use(
-    new jwtStrategy(
-      {
-        //Where the token is coming and
-        jwtFromRequest: ExtractJwt.fromHeader("authorization"),
-        //what secret should be used to decode
-        secretOrKey: config.env.JWT_KEY
-      },
-      async (jwt_payload, done) => {
-        console.log(jwt_payload);
-        try {
-          //find the user specified in token
-          const user = await db.User.findById(jwt_payload.id);
-          console.log("user passjwt:" + user);
-          //if user doesn't exist, handle it
-          if (!user) {
-            return done(null, false);
+  try {
+    passport.use(
+      "jwt",
+      new jwtStrategy(
+        {
+          //Where the token is coming and
+          jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken("bearer"),
+          //what secret should be used to decode
+          secretOrKey: config.env.JWT_KEY
+        },
+        async (jwt_payload, done) => {
+          console.log(jwt_payload);
+          try {
+            //find the user specified in token
+            const user = await db.User.findOne(jwt_payload.id);
+            console.log("user passjwt:" + user);
+            //if user doesn't exist, handle it
+            if (!user) {
+              return done(null, false);
+            }
+            //otherwise return the user
+            done(null, user);
+          } catch (error) {
+            done(error, false);
           }
-          //otherwise return the user
-          done(null, user);
-        } catch (error) {
-          done(error, false);
         }
-      }
-    )
-  );
+      )
+    );
+  } catch (e) {
+    console.log("PASSPORT ERROR: ", e);
+  }
 };
 
 // module.exports = function(passport) {

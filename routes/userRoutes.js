@@ -72,9 +72,10 @@ router.post("/signup", async (req, res, next) => {
 //Tested with postman "Auth successful"
 router.post("/api/user/login", async (req, res, next) => {
   try {
+    console.log(req.body);
     const user = await db.User.findOne({
       where: {
-        username: req.body.username
+        username: req.body.user.username
       }
     });
     if (!user) {
@@ -84,7 +85,7 @@ router.post("/api/user/login", async (req, res, next) => {
     }
 
     const isMatch = await bcrypt.compare(
-      req.body.password,
+      req.body.user.password,
       user.dataValues.password
     );
 
