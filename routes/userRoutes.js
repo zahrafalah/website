@@ -29,7 +29,7 @@ router.post("/signup", async (req, res, next) => {
     req.body.password = hashedPassword;
     // console.log("req.body", req.body);
     const user = await db.User.create(req.body);
-
+    // console.log(user);
     //sending back
     res.send(user);
   } catch (e) {
@@ -85,7 +85,7 @@ router.post("/api/user/login", async (req, res, next) => {
     }
 
     const isMatch = await bcrypt.compare(
-      req.body.user.password,
+      req.body.password,
       user.dataValues.password
     );
 
